@@ -35,22 +35,17 @@ class SelfieToolKandinsky(Tool):
     if api_key != "":
       self.generator_plugin_config["replicate_api_key"] = api_key
 
-    modified_inputs = [
-        Block(text=self.rewrite_prompt.format(subject=block.text))
-        for block in tool_input
-    ]
-    #print(str(modified_inputs))
     generator = context.client.use_plugin(self.generator_plugin_handle,
                                           config=self.generator_plugin_config)
 
-    prompt = self.rewrite_prompt.format(subject=modified_inputs)
+    prompt = self.rewrite_prompt.format(subject=tool_input[0].text)
     #print(prompt)
     task = generator.generate(
         text=prompt,
         make_output_public=True,
         append_output_to_file=True,
         options={
-            "num_inference_steps": 1,  #75
+            "num_inference_steps": 1,  #75ö
             "num_steps_prior": 1,  #25
             "height": 384,  #1024
             "width": 384  #768
